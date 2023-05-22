@@ -17,7 +17,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('love_ireland')
 
-def greeting 
+def greeting():
     """
     Function to ask the user to input their name and then greets them.
     """
@@ -26,7 +26,7 @@ def greeting
     print(' We would also love to offer you a personalised tour guide plan for')
     print(' the counties that you havent got to visit yet!')
     name = input('First of all, we would love to know your name. Please enter your name: ') 
-    print('Hello', name, '! Lets get started.')
+    print('Hello,', name, '! Lets get started.')
 
 def county_and_score(county_name, score)
     """
@@ -255,7 +255,8 @@ def main():
     """
     Call all program functions.
     """
-    user_scores = get_user_score():
+    greeting()
+    user_scores = get_user_score()
     average_score = calculate_average_score(user_scores)
     county_name = county_titles()
     county_and_score(county_name, average_score)
