@@ -17,10 +17,20 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('love_ireland')
 
+def greeting 
+    """
+    Function to ask the user to input their name and then greets them.
+    """
+    print(' Hello! Welcome to Love Ireland. Here at Love Ireland we would love to hear')
+    print(' about your experiences with the top most loved counties in Ireland.')
+    print(' We would also love to offer you a personalised tour guide plan for')
+    print(' the counties that you havent got to visit yet!')
+    name = input('First of all, we would love to know your name. Please enter your name: ') 
+    print('Hello', name, '! Lets get started.')
 
 def county_and_score(county_name, score)
     """
-    Return a list of Irish county titles & scores together.
+    Function to return a list of the top 3 popular counties in Ireland & their scores together.
     """
     print(' Below you shall find a list of available counties,')
     print(' along with their user scores.\n')
@@ -51,7 +61,7 @@ def county_titles():
 
 def index_titles():
     """
-    Function to index available county titles
+    Function to index popular counties
     """
     county_names = county_titles()
     index = 1
@@ -63,7 +73,7 @@ def index_titles():
 # This function is based on the 'Love Sandwiches' walk through.
 def get_user_score():
     """
-    Obtain all user scores, and return data as a list of lists.
+    Function to get all of the user scores, and return data as a list of data.
     """
     scores = SHEET.worksheet('scores')
     columns = []
@@ -74,11 +84,10 @@ def get_user_score():
     return columns
 
 
-# This code was rewritten with the help of a friend, Nick Ludlam.
 def calculate_average_score(data):
     """
-    Taking the information generated in the get_user_score(): function
-    And returning an average for all scores inputted thus far.
+    A mathmatical function that takes the data generated in the get_user_score(): function
+    And returns an average of all the scores inputted.
     """
     average_score = []
     for column in data:
@@ -98,9 +107,10 @@ def calculate_average_score(data):
 
 def rate_or_retrieve():
     """
-    Function to determine which option the user would like to proceed with.
-    They may either rate a county they have tried.
-    Or try a new county.
+    A function to determine which option the user would like to proceed with.
+    They may either rate a county they have previously explored,
+    Or get information/tour guide of a new county to explore to be able to review
+    at a later stage.
     """
     option = input(" Make your selection, 1 county or 2 score:\n ")
     if option == '1':
@@ -115,15 +125,15 @@ def rate_or_retrieve():
 
 def retrieve_county():
     """
-    Function to display county names once more,
+    A function to display popular county names once more,
     and allow the user to select a county to retrieve.
     """
-    print('\n Select the county you would like to retrieve.')
-    print(' Choose the county by the numberical value.\n')
+    print('\n Select the county you would like to retrieve information on.')
+    print(' Choose the county based on its numberical value.\n')
 
     index_titles()
 
-    selection = input('\n Please select a county to retrieve:\n ')
+    selection = input('\n Please select a county to retrieve information about:\n ')
 
     if selection == '1':
         travel_guide_list('dublin')
@@ -196,11 +206,10 @@ def submit_score():
             (' You may only choose one of the listed options.\n'), 'red'))
         return submit_score()
 
-    print('\n Thank you for your submission!')
+    print('\n Thank you for your review!')
     quit_repeat()
 
 
-# Assistance came from my fellow student, Mats Simonsson, credited in README.
 def user_scores():
     """
     Accepts the user input to determine if the score is valid.
@@ -228,7 +237,7 @@ def user_scores():
 def quit_repeat():
     """
     Function to allow the user to either quit the program,
-    or restart it
+    or restart it and select '1' or '2' again.
     """
     print('\n Enter: "R" to restart the application.')
     print('\n Enter: "Q" to quit the application.\n')
@@ -236,9 +245,9 @@ def quit_repeat():
     if option == 'R':
         main()
     elif option == 'Q':
-        sys.exit('\n Thank you & Good bye!')
+        sys.exit('\n Thank you for your participation & slán!')
     else:
-        print(colored((' \nInvalid choice. Enter: R or Q only.\n'), 'red'))
+        print(colored((' \nInvalid choice. Enter: R or Q only please.\n'), 'red'))
         return quit_repeat()
 
 
@@ -253,7 +262,7 @@ def main():
     rate_or_retrieve()
 
 
-print(colored(("\n Welcome to Love Ireland. Let's begin!"), 'yellow'))
-print(colored((" Welcome to Love Ireland. Let's begin!"), 'cyan'))
-print(colored((" Welcome to Love Ireland. Let's begin!\n"), 'magenta'))
+print(colored(("\n Welcome to Love Ireland. Let's begin!"), 'green'))
+print(colored((" Welcome to Love Ireland. Let's begin!"), 'white'))
+print(colored((" Welcome to Love Ireland. Let's begin!\n"), 'light_red'))
 main()
