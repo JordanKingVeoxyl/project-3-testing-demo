@@ -18,16 +18,16 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('love_ireland')
 
 
-def title_and_rating(title, rating):
+def county_and_score(county_name, score)
     """
     Return a list of Irish county titles & ratings together.
     """
     print(' Below you shall find a list of available counties,')
     print(' along with their user ratings.\n')
 
-    for title, rating in zip(title, rating):
+    for county_name, score in zip(county_name, score):
         print(colored(
-            (f' County title: {title}\n User rating: {rating} / 5 stars\n'),
+            (f' County title: {county_name}\n User rating: {score} / 5 stars\n'),
             'cyan'))
 
     print(' Enter "1" if you would like to learn how to explore a new county.')
@@ -41,22 +41,22 @@ def county_titles():
     Function to return a list of the available county titles to choose from.
     """
     counties = SHEET.worksheet('ratings')
-    titles = []
+    county_names = []
     for ind in range(1, 4):
-        title = counties.col_values(ind)
-        titles.append(title[0])
+        county_name = counties.col_values(ind)
+        county_names.append(county_name[0])
 
-    return titles
+    return county_names
 
 
 def index_titles():
     """
     Function to index available county titles
     """
-    titles = county_titles()
+    county_names = county_titles()
     index = 1
-    for title in titles:
-        print(colored((f' {index}. {title}'), 'cyan'))
+    for county_name in county_names:
+        print(colored((f' {index}. {county_name}'), 'cyan'))
         index += 1
 
 
@@ -206,7 +206,7 @@ def user_ratings():
     Accepts the user input to determine if the rating is valid.
     To be used within the 'submit_rating' function.
     """
-    rating = []
+    score = []
     while True:
         try:
             star_rating = int(input(' Submit your rating: \n '))
@@ -217,12 +217,12 @@ def user_ratings():
             continue
     if star_rating <= 5:
         rating.append(star_rating)
-        return rating
+        return score
     else:
         print(colored((' \nYou must enter a number between 1 and 5'), 'red'))
         user_ratings()
 
-    return rating
+    return score
 
 
 def quit_repeat():
@@ -249,7 +249,7 @@ def main():
     user_ratings = obtain_user_ratings()
     average_rating = calculate_average_rating(user_ratings)
     county_name = county_titles()
-    title_and_rating(county_name, average_rating)
+    county_and_rating(county_name, average_rating)
     rate_or_retrieve()
 
 
