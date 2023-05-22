@@ -28,7 +28,7 @@ def greeting():
     name = input('First of all, we would love to know your name. Please enter your name: ') 
     print('Hello,', name, '! Lets get started.')
 
-def county_and_score(county_name, score)
+def county_and_score(county_name, score):
     """
     Function to return a list of the top 3 popular counties in Ireland & their scores together.
     """
@@ -122,6 +122,15 @@ def rate_or_retrieve():
             ('\n Invalid choice. You may only choose 1 or 2\n'), 'red'))
         return rate_or_retrieve()
 
+def choice_helper():
+    """
+    A function which generates a random number ranging from 1-3 and prints it
+    in the event that the user needs a random choice to be generated for them due to 
+    not being able to make their own decision on what county to visit.
+    """
+    number_choices = ['1', '2', '3']
+    random_number_choices = random.choice(number_choices)
+    print(random_number_choices)
 
 def retrieve_county():
     """
@@ -130,7 +139,11 @@ def retrieve_county():
     """
     print('\n Select the county you would like to retrieve information on.')
     print(' Choose the county based on its numberical value.\n')
-
+    print(' If youre having a difficult time choosing, heres a randomized selection)
+    print(' that you can use instead:')
+    
+    choice_helper()
+    
     index_titles()
 
     selection = input('\n Please select a county to retrieve information about:\n ')
