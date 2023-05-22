@@ -20,18 +20,18 @@ SHEET = GSPREAD_CLIENT.open('love_ireland')
 
 def county_and_score(county_name, score)
     """
-    Return a list of Irish county titles & ratings together.
+    Return a list of Irish county titles & scores together.
     """
     print(' Below you shall find a list of available counties,')
-    print(' along with their user ratings.\n')
+    print(' along with their user scores.\n')
 
     for county_name, score in zip(county_name, score):
         print(colored(
-            (f' County title: {county_name}\n User rating: {score} / 5 stars\n'),
+            (f' County title: {county_name}\n User score: {score} / 5 stars\n'),
             'cyan'))
 
     print(' Enter "1" if you would like to learn how to explore a new county.')
-    print(' Enter "2" if you would like to submit a rating for a county you')
+    print(' Enter "2" if you would like to submit a score for a county you')
     print(' have already tried.\n')
 
 
@@ -40,7 +40,7 @@ def county_titles():
     """
     Function to return a list of the available county titles to choose from.
     """
-    counties = SHEET.worksheet('ratings')
+    counties = SHEET.worksheet('scores')
     county_names = []
     for ind in range(1, 4):
         county_name = counties.col_values(ind)
@@ -61,39 +61,39 @@ def index_titles():
 
 
 # This function is based on the 'Love Sandwiches' walk through.
-def obtain_user_ratings():
+def get_user_score():
     """
-    Obtain all user ratings, and return data as a list of lists.
+    Obtain all user scores, and return data as a list of lists.
     """
-    ratings = SHEET.worksheet('ratings')
+    scores = SHEET.worksheet('scores')
     columns = []
     for ind in range(1, 4):
-        column = ratings.col_values(ind)
+        column = scores.col_values(ind)
         columns.append(column[1:])
 
     return columns
 
 
 # This code was rewritten with the help of a friend, Nick Ludlam.
-def calculate_average_rating(data):
+def calculate_average_score(data):
     """
-    Taking the information generated in the obtain_user_ratings function
-    And returning an average for all ratings inputted thus far.
+    Taking the information generated in the get_user_score(): function
+    And returning an average for all scores inputted thus far.
     """
-    average_rating = []
+    average_score = []
     for column in data:
-        rating_count = 0
-        rating_total = 0
+        score_count = 0
+        score_total = 0
 
         for num in column:
             if num:
-                rating_count += 1
-                rating_total += int(num)
+                score_count += 1
+                score_total += int(num)
 
-        average = rating_total / rating_count
-        average_rating.append(round(average, 2))
+        average = score_total / score_count
+        average_score.append(round(average, 2))
 
-    return average_rating
+    return average_score
 
 
 def rate_or_retrieve():
@@ -102,11 +102,11 @@ def rate_or_retrieve():
     They may either rate a county they have tried.
     Or try a new county.
     """
-    option = input(" Make your selection, 1 county or 2 rating:\n ")
+    option = input(" Make your selection, 1 county or 2 score:\n ")
     if option == '1':
         retrieve_county()
     elif option == '2':
-        submit_rating()
+        submit_score()
     else:
         print(colored(
             ('\n Invalid choice. You may only choose 1 or 2\n'), 'red'))
@@ -166,61 +166,61 @@ def travel_guide_list(county):
         print(colored((guide_instruction), 'cyan'))
 
 
-def submit_rating():
+def submit_score():
     """
     Function to display county names once more,
     and allow the user to select a title to rate.
     """
     print('\n Select the county you would like to rate.')
     print(' Choose the county by the numberical value.')
-    print(' Enter a rating between 1-5. Whole numbers ONLY.')
+    print(' Enter a score between 1-5. Whole numbers ONLY.')
     print(' 1 being the worst, 5 the best.\n')
 
     index_titles()
 
-    selection = input('\n Please select a county to submit a rating for:\n ')
-    update_rating = SHEET.worksheet('ratings')
+    selection = input('\n Please select a county to submit a score for:\n ')
+    update_score = SHEET.worksheet('scores')
 
     if selection == '1':
-        input_rating = user_ratings()
-        update_rating.append_row([input_rating[0], '', ''])
+        input_score = user_scores()
+        update_score.append_row([input_score[0], '', ''])
     elif selection == '2':
-        input_rating = user_ratings()
-        update_rating.append_row(['', input_rating[0], ''])
+        input_score = user_scores()
+        update_score.append_row(['', input_score[0], ''])
     elif selection == '3':
-        input_rating = user_ratings()
-        update_rating.append_row(['', '', input_rating[0]])
+        input_score = user_scores()
+        update_score.append_row(['', '', input_score[0]])
     else:
         print(colored(('\n Invalid choice.'), 'red'))
         print(colored(
             (' You may only choose one of the listed options.\n'), 'red'))
-        return submit_rating()
+        return submit_score()
 
     print('\n Thank you for your submission!')
     quit_repeat()
 
 
 # Assistance came from my fellow student, Mats Simonsson, credited in README.
-def user_ratings():
+def user_scores():
     """
-    Accepts the user input to determine if the rating is valid.
-    To be used within the 'submit_rating' function.
+    Accepts the user input to determine if the score is valid.
+    To be used within the 'submit_score' function.
     """
     score = []
     while True:
         try:
-            star_rating = int(input(' Submit your rating: \n '))
+            star_score = int(input(' Submit your score: \n '))
             break
         except ValueError:
             print(colored(
                 (' \nYou must enter a number between 1 and 5'), 'red'))
             continue
-    if star_rating <= 5:
-        rating.append(star_rating)
+    if star_score <= 5:
+        score.append(star_score)
         return score
     else:
         print(colored((' \nYou must enter a number between 1 and 5'), 'red'))
-        user_ratings()
+        user_scores()
 
     return score
 
@@ -246,14 +246,14 @@ def main():
     """
     Call all program functions.
     """
-    user_ratings = obtain_user_ratings()
-    average_rating = calculate_average_rating(user_ratings)
+    user_scores = get_user_score():
+    average_score = calculate_average_score(user_scores)
     county_name = county_titles()
-    county_and_rating(county_name, average_rating)
+    county_and_score(county_name, average_score)
     rate_or_retrieve()
 
 
-print(colored(("\n Welcome to Love Ireland. Let's get started!"), 'yellow'))
-print(colored((" Welcome to Love Ireland. Let's get started!"), 'cyan'))
-print(colored((" Welcome to Love Ireland. Let's get started!\n"), 'magenta'))
+print(colored(("\n Welcome to Love Ireland. Let's begin!"), 'yellow'))
+print(colored((" Welcome to Love Ireland. Let's begin!"), 'cyan'))
+print(colored((" Welcome to Love Ireland. Let's begin!\n"), 'magenta'))
 main()
